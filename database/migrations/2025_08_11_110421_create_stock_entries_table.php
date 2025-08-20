@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->enum('type',['in','out']);
             $table->morphs('source'); 
-            $table->decimal('quantity',8 , 2);
-            $table -> text('description')->nullable();
+            $table->decimal('quantity',15 , 3);
+            $table -> text('note')->nullable();
             $table->timestamps();
         });
     }

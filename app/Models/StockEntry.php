@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockEntry extends Model
 {
-    protected $fillable = ['type', 'quantity', 'description'];
+protected $fillable = ['source_id', 'source_type', 'quantity', 'type', 'note'];
 
     public function source()
     {

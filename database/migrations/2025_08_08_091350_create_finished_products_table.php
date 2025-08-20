@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('sku')->unique();
+            $table->string('unit');
             $table->decimal('stock_quantity',15,3)->default(0);
             $table->timestamps();
         });

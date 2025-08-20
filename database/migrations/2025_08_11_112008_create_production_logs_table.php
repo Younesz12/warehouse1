@@ -13,7 +13,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('finished_product_id')->constrained()->cascadeOnDelete();
              $table->decimal('quantity_produced', 15, 3);
-
             $table->timestamps();
         });
     }
