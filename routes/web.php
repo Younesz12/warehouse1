@@ -24,4 +24,3 @@ Route::resource('purchase-orders', PurchaseOrderController::class);
 Route::resource('production-logs', ProductionLogController::class);
 
 // حركات المخزون (قراءة فقط)
-Route::get('stock-entries', [StockEntryController::class, 'index']);

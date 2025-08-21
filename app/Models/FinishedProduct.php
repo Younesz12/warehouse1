@@ -8,10 +8,7 @@ class FinishedProduct extends Model
 {
     protected $fillable = ['name', 'sku','unit','stock_quantity'];
 
-    public function stockEntries()
-    {
-        return $this->morphMany(StockEntry::class, 'source');
-    }
+    
 
     public function productionLogs()
     {

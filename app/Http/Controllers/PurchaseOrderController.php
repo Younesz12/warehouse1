@@ -3,73 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\PurchaseOrder;
+use App\Models\RawProduct;
 use Illuminate\Http\Request;
 
 class PurchaseOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin')->except(['index', 'show']);
+    }
+
     public function index()
     {
-        return PurchaseOrder::with('rawProduct')->get();
+        $orders = PurchaseOrder::with('rawProduct')->get();
+        return view('purchase_orders.index', compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $rawProducts = RawProduct::all();
+        return view('purchase_orders.create', compact('rawProducts'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-   public function store(Request $request) {
-    $order = PurchaseOrder::create($request->all());
-     if ($order->status === 'completed') {
-                  $order->rawProduct->increment('stock_quantity', $order->quantity);
-                  $order->rawProduct->stockEntries()->create([
-                     'quantity' => $order->quantity,
-                        ' type' => 'in',
-                     'note' => 'Purchase Order #' . $order->id,
-                ]);
- }
-      return $order;
- }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'raw_product_id' => 'required|exists:raw_products,id',
+            'quantity' => 'required|numeric|min:1'
+        ]);
+
+        $order = PurchaseOrder::create($data);
+
+        // update stock automatically
+        $order->rawProduct->increment('stock_quantity', $data['quantity']);
+        $order->update(['status' => 'completed']);
+
+        return redirect()->route('purchase_orders.index')
+                         ->with('success', 'Purchase order created successfully.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PurchaseOrder $purchaseOrder)
-    {
-        $purchaseOrder->update ($request->all());
-        return $purchaseOrder;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(PurchaseOrder $purchaseOrder)
     {
         $purchaseOrder->delete();
-        return response()->noContent();
+
+        return redirect()->route('purchase_orders.index')
+                         ->with('success', 'Purchase order deleted successfully.');
     }
 }

@@ -13,7 +13,7 @@ class ProductionLog extends Model
         return $this->belongsTo(FinishedProduct::class);
     }
 
-    public function materials()
+    public function rawProduct()
     {
         return $this->belongsToMany(RawProduct::class, 'production_log_materials')
                     ->withPivot('quantity_used')

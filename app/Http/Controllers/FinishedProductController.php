@@ -2,70 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\FinishedProduct;
+use Illuminate\Http\Request;
 
 class FinishedProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin')->except(['index', 'show']);
+    }
+
     public function index()
     {
-        return FinishedProduct::all();
+        $finishedProducts = FinishedProduct::all();
+        return view('finished_products.index', compact('finishedProducts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('finished_products.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        return  FinishedProduct::create($request->all());
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'sku' => 'required|string|unique:finished_products,sku',
+            'unit' => 'required|string|max:50',
+            'stock_quantity' => 'nullable|numeric|min:0'
+        ]);
+
+        FinishedProduct::create($data);
+
+        return redirect()->route('finished_products.index')
+                         ->with('success', 'Finished product created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(FinishedProduct $finishedProduct)
+    public function edit(FinishedProduct $finishedProduct)
     {
-        return $finishedProduct;
-    }
-    
-    
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return view('finished_products.edit', compact('finishedProduct'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, FinishedProduct $finishedProduct)
     {
-        $finishedProduct->update($request->all());
-        return $finishedProduct;
-    
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'sku' => 'required|string|unique:finished_products,sku,' . $finishedProduct->id,
+            'unit' => 'required|string|max:50',
+            'stock_quantity' => 'nullable|numeric|min:0'
+        ]);
+
+        $finishedProduct->update($data);
+
+        return redirect()->route('finished_products.index')
+                         ->with('success', 'Finished product updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(FinishedProduct $finishedProduct)
     {
         $finishedProduct->delete();
-        return response()->noContent();
+
+        return redirect()->route('finished_products.index')
+                         ->with('success', 'Finished product deleted successfully.');
     }
-} 
+}
