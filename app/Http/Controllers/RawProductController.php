@@ -13,7 +13,8 @@ class RawProductController extends Controller
     public function index()
     {
 
-        return RawProduct::all();
+        $rawProducts = RawProduct::all();
+    return view('raw_products.index', compact('rawProducts'));
     }
 
     /**
