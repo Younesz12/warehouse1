@@ -4,23 +4,24 @@ use App\Http\Controllers\RawProductController;
 use App\Http\Controllers\FinishedProductController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ProductionLogController;
-use App\Http\Controllers\StockEntryController;
 
-// صفحة البداية
+// Home page
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
+})->middleware('auth')->name('home');
+
+// Dashboard  
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+// Your warehouse routes
+Route::middleware('auth')->group(function () {
+    Route::resource('raw-products', RawProductController::class);
+    Route::resource('finished-products', FinishedProductController::class);
+    Route::resource('purchase-orders', PurchaseOrderController::class);
+    Route::resource('production-logs', ProductionLogController::class);
 });
 
-// المواد الخام
-Route::resource('raw-products', RawProductController::class);
-
-// المنتجات النهائية
-Route::resource('finished-products', FinishedProductController::class);
-
-// أوامر الشراء
-Route::resource('purchase-orders', PurchaseOrderController::class);
-
-// عمليات التصنيع
-Route::resource('production-logs', ProductionLogController::class);
-
-// حركات المخزون (قراءة فقط)
+// Breeze auth routes
+require __DIR__.'/auth.php';
