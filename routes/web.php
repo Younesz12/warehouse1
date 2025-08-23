@@ -21,6 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('finished-products', FinishedProductController::class);
     Route::resource('purchase-orders', PurchaseOrderController::class);
     Route::resource('production-logs', ProductionLogController::class);
+    Route::get('/profile', function () {
+    return view('profile');
+})->middleware('auth')->name('profile.edit');
+
 });
 
 // Breeze auth routes

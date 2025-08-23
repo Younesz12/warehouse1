@@ -12,12 +12,7 @@ class ProductionLogController extends Controller
 {
     protected $service;
 
-    public function __construct(ProductionService $service)
-    {
-        $this->middleware('auth');
-        $this->middleware('role:admin')->except(['index', 'show']);
-        $this->service = $service;
-    }
+    
 
     public function index()
     {
