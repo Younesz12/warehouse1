@@ -3,10 +3,10 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="h5 card-title">Purchase Orders</h2>
+                    <h2 class="h5 card-title">Production Logs</h2>
                     @can('admin')
-                        <a href="{{ route('purchase-orders.create') }}" class="btn btn-primary">
-                            New Order
+                        <a href="{{ route('production-logs.create') }}" class="btn btn-primary">
+                            New Production
                         </a>
                     @endcan
                 </div>
@@ -16,9 +16,8 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Raw Product</th>
-                                <th>Quantity</th>
-                                <th>Status</th>
+                                <th>Finished Product</th>
+                                <th>Quantity Produced</th>
                                 <th>Date</th>
                                 @can('admin')
                                     <th>Actions</th>
@@ -26,16 +25,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($orders as $order)
+                            @foreach($logs as $log)
                                 <tr>
-                                    <td>{{ $order->id }}</td>
-                                    <td>{{ $order->rawProduct->name }}</td>
-                                    <td>{{ $order->quantity }}</td>
-                                    <td>{{ $order->status }}</td>
-                                    <td>{{ $order->created_at->format('Y-m-d') }}</td>
+                                    <td>{{ $log->id }}</td>
+                                    <td>{{ $log->finishedProduct->name }}</td>
+                                    <td>{{ $log->quantity_produced }}</td>
+                                    <td>{{ $log->created_at->format('Y-m-d') }}</td>
                                     @can('admin')
                                         <td>
-                                            <form action="{{ route('purchase-orders.destroy', $order) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('production-logs.destroy', $log) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>

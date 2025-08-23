@@ -7,17 +7,15 @@ use Illuminate\Http\Request;
 
 class RawProductController extends Controller
 {
-   
-
     public function index()
     {
         $rawProducts = RawProduct::all();
-        return view('raw_products.index', compact('rawProducts'));
+        return view('raw-products.index', compact('rawProducts'));
     }
 
     public function create()
     {
-        return view('raw_products.create');
+        return view('raw-products.create');
     }
 
     public function store(Request $request)
@@ -31,13 +29,13 @@ class RawProductController extends Controller
 
         RawProduct::create($data);
 
-        return redirect()->route('raw_products.index')
+        return redirect()->route('raw-products.index')
                          ->with('success', 'Raw product created successfully.');
     }
 
     public function edit(RawProduct $rawProduct)
     {
-        return view('raw_products.edit', compact('rawProduct'));
+        return view('raw-products.edit', compact('rawProduct'));
     }
 
     public function update(Request $request, RawProduct $rawProduct)
@@ -51,7 +49,7 @@ class RawProductController extends Controller
 
         $rawProduct->update($data);
 
-        return redirect()->route('raw_products.index')
+        return redirect()->route('raw-products.index')
                          ->with('success', 'Raw product updated successfully.');
     }
 
@@ -59,7 +57,7 @@ class RawProductController extends Controller
     {
         $rawProduct->delete();
 
-        return redirect()->route('raw_products.index')
+        return redirect()->route('raw-products.index')
                          ->with('success', 'Raw product deleted successfully.');
     }
 }

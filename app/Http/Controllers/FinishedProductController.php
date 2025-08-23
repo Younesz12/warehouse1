@@ -7,23 +7,22 @@ use Illuminate\Http\Request;
 
 class FinishedProductController extends Controller
 {
-   
-
     public function index()
     {
         $finishedProducts = FinishedProduct::all();
-        return view('finished_products.index', compact('finishedProducts'));
+        return view('finished-products.index', compact('finishedProducts'));
     }
 
     public function create()
     {
-        return view('finished_products.create');
+        return view('finished-products.create');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
+            // Corrected line: 'finished_products' uses an underscore
             'sku' => 'required|string|unique:finished_products,sku',
             'unit' => 'required|string|max:50',
             'stock_quantity' => 'nullable|numeric|min:0'
@@ -31,19 +30,20 @@ class FinishedProductController extends Controller
 
         FinishedProduct::create($data);
 
-        return redirect()->route('finished_products.index')
+        return redirect()->route('finished-products.index')
                          ->with('success', 'Finished product created successfully.');
     }
 
     public function edit(FinishedProduct $finishedProduct)
     {
-        return view('finished_products.edit', compact('finishedProduct'));
+        return view('finished-products.edit', compact('finishedProduct'));
     }
 
     public function update(Request $request, FinishedProduct $finishedProduct)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
+            // Corrected line: 'finished_products' uses an underscore
             'sku' => 'required|string|unique:finished_products,sku,' . $finishedProduct->id,
             'unit' => 'required|string|max:50',
             'stock_quantity' => 'nullable|numeric|min:0'
@@ -51,7 +51,7 @@ class FinishedProductController extends Controller
 
         $finishedProduct->update($data);
 
-        return redirect()->route('finished_products.index')
+        return redirect()->route('finished-products.index')
                          ->with('success', 'Finished product updated successfully.');
     }
 
@@ -59,7 +59,7 @@ class FinishedProductController extends Controller
     {
         $finishedProduct->delete();
 
-        return redirect()->route('finished_products.index')
+        return redirect()->route('finished-products.index')
                          ->with('success', 'Finished product deleted successfully.');
     }
 }

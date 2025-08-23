@@ -18,6 +18,7 @@ Route::get('/dashboard', function () {
 // Your warehouse routes
 Route::middleware('auth')->group(function () {
     Route::resource('raw-products', RawProductController::class);
+    Route::resource('raw-products', \App\Http\Controllers\RawProductController::class)->middleware(['auth', 'role:admin']);
     Route::resource('finished-products', FinishedProductController::class);
     Route::resource('purchase-orders', PurchaseOrderController::class);
     Route::resource('production-logs', ProductionLogController::class);

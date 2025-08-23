@@ -17,14 +17,14 @@ class ProductionLogController extends Controller
     public function index()
     {
         $logs = ProductionLog::with('finishedProduct','rawProducts')->get();
-        return view('production_logs.index', compact('logs'));
+        return view('production-logs.index', compact('logs'));
     }
 
     public function create()
     {
         $finishedProducts = FinishedProduct::all();
         $rawProducts = RawProduct::all();
-        return view('production_logs.create', compact('finishedProducts','rawProducts'));
+        return view('production-logs.create', compact('finishedProducts','rawProducts'));
     }
 
     public function store(Request $request)
@@ -36,16 +36,16 @@ class ProductionLogController extends Controller
             'raw_products.*' => 'numeric|min:0'
         ]);
 
-        $this->service->produce($data);
-
-        return redirect()->route('production_logs.index')
+ $service = new ProductionService();
+        $service->produce($data);
+        return redirect()->route('production-logs.index')
                          ->with('success', 'Production log created successfully.');
     }
 
     public function destroy(ProductionLog $productionLog)
     {
         $productionLog->delete();
-        return redirect()->route('production_logs.index')
+        return redirect()->route('production-logs.index')
                          ->with('success', 'Production log deleted successfully.');
     }
 }

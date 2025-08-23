@@ -9,7 +9,7 @@ return new class extends Migration
     
     public function up(): void
     {
-        Schema::create('finished_products', function (Blueprint $table) {
+        Schema::create('finished-products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('sku')->unique();
@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('finished_products');
+        Schema::dropIfExists('finished-products');
     }
 };

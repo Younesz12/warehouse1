@@ -22,28 +22,30 @@ class PurchaseOrderController extends Controller
         return view('purchase_orders.create', compact('rawProducts'));
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'raw_product_id' => 'required|exists:raw_products,id',
-            'quantity' => 'required|numeric|min:1'
-        ]);
+    // In PurchaseOrderController.php
 
-        $order = PurchaseOrder::create($data);
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'raw_product_id' => 'required|exists:raw_products,id',
+        'quantity' => 'required|numeric|min:1'
+    ]);
 
-        // update stock automatically
-        $order->rawProduct->increment('stock_quantity', $data['quantity']);
-        $order->update(['status' => 'completed']);
+    $order = PurchaseOrder::create($data);
 
-        return redirect()->route('purchase_orders.index')
-                         ->with('success', 'Purchase order created successfully.');
-    }
+    // update stock automatically
+    $order->rawProduct->increment('stock_quantity', $data['quantity']);
+    $order->update(['status' => 'completed']);
+
+    return redirect()->route('purchase-orders.index')
+                     ->with('success', 'Purchase order created successfully.');
+}
 
     public function destroy(PurchaseOrder $purchaseOrder)
     {
         $purchaseOrder->delete();
 
-        return redirect()->route('purchase_orders.index')
-                         ->with('success', 'Purchase order deleted successfully.');
+        return redirect()->route('purchase-orders.index')
+                     ->with('success', 'Purchase order deleted successfully.');
     }
 }

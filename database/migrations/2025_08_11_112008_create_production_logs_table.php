@@ -9,7 +9,7 @@ return new class extends Migration
     
     public function up(): void
     {
-        Schema::create('production_logs', function (Blueprint $table) {
+        Schema::create('production-logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('finished_product_id')->constrained()->cascadeOnDelete();
              $table->decimal('quantity_produced', 15, 3);
@@ -20,6 +20,6 @@ return new class extends Migration
     
     public function down(): void
     {
-        Schema::dropIfExists('production_logs');
+        Schema::dropIfExists('production-logs');
     }
 };
