@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PurchaseOrder extends Model
 {
-    // Add these fields to allow mass assignment
+    // Define the columns that can be mass-assigned
     protected $fillable = [
         'raw_product_id', 
         'quantity', 
@@ -14,7 +15,10 @@ class PurchaseOrder extends Model
         'executed_at'
     ];
 
-    public function rawProduct()
+    /**
+     * Get the raw product associated with the purchase order.
+     */
+    public function rawProduct(): BelongsTo
     {
         return $this->belongsTo(RawProduct::class);
     }

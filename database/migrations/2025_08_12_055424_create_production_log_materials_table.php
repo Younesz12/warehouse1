@@ -10,7 +10,8 @@ return new class extends Migration {
         Schema::create('production_log_materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('production_log_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('raw-product_id')->constrained()->cascadeOnDelete();
+            // Change 'raw-product_id' to 'raw_product_id'
+            $table->foreignId('raw_product_id')->constrained()->cascadeOnDelete();
             $table->decimal('quantity_used', 15, 3);
             $table->timestamps();
         });
